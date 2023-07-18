@@ -1,0 +1,30 @@
+.login {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loginContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.loginInput {
+  height: 30px;
+  padding: 10px;
+}
+
+.loginBtn {
+  border: none;
+  padding: 10px 30px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 5px;
+  background-color: #fffc55;
+}
+.loginBtn:disabled {
+  background-color: #fdfca7;
+  cursor: none;
+}

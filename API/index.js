@@ -6,7 +6,7 @@ import usersRoute from "./routes/users.js";
 import hotelsRoute from "./routes/hotels.js";
 import roomsRoute from "./routes/rooms.js";
 import cookieParser from "cookie-parser";
-
+import cors from "cors";
 const app = express();
 dotenv.config();
 
@@ -19,12 +19,8 @@ const connect = async () => {
   }
 };
 
-app.listen(8888, () => {
-  connect();
-  console.log("connected with backend ..... ");
-});
-
 //MIDDLEWARES
+app.use(cors());
 app.use(cookieParser());
 //to send json to express we have to use it's middleware
 app.use(express.json());
@@ -43,4 +39,9 @@ app.use((err, req, res, next) => {
     success: false,
     message: errorMessage,
   });
+});
+
+app.listen(8888, () => {
+  connect();
+  console.log("connected with backend ..... ");
 });

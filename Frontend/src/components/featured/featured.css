@@ -11,6 +11,7 @@
 }
 
 .featuredItem {
+  cursor: pointer;
   position: relative;
   color: #ffffff;
   border-radius: 10px;

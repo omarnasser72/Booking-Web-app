@@ -1,6 +1,8 @@
 import "./propertyList.css";
 import useFetch from "../../hooks/useFetch.js";
-import { API_URL } from "../../config.js";
+
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 const PropertyList = () => {
   const { data, loading, error } = useFetch("/hotels/countByType");
   const images = [
@@ -10,6 +12,16 @@ const PropertyList = () => {
     "https://cf.bstatic.com/xdata/images/hotel/max1024x768/295090917.jpg?k=d17621b71b0eaa0c7a37d8d8d02d33896cef75145f61e7d96d296d88375a7d39&o=&hp=1",
     "https://hips.hearstapps.com/hmg-prod/images/cozy-winter-cabins-1603479244.jpg?crop=1.00xw:0.760xh;0,0.217xh&resize=1200:*",
   ];
+  const navigate = useNavigate();
+  const handleClick = async (type) => {
+    if (type !== "hotel") navigate(`ListAll/${type}s`);
+    try {
+      await axios.get(`${type}s`);
+      navigate(`ListAll/${type}s`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="pList">
       {loading ? (
@@ -18,7 +30,11 @@ const PropertyList = () => {
         <>
           {data &&
             images.map((image, i) => (
-              <div className="pListItem" key={i}>
+              <div
+                className="pListItem"
+                key={i}
+                onClick={() => handleClick(data[i]?.type)}
+              >
                 <img src={image} alt="" className="pListImg" />
                 <div className="pListTitle">
                   <h1>{data[i]?.type}</h1>

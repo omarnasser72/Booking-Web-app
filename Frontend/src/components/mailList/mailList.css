@@ -1,8 +1,8 @@
 .mail {
-  background-color: black;
+  background-color: rgb(66, 66, 66);
   color: #f3f709;
   width: 100%;
-
+  margin-top: 5%;
   align-items: center;
   font-family: "Courier New", Courier, monospace;
   padding-bottom: 50px;
@@ -12,10 +12,9 @@
 }
 
 .mailTitle {
+  margin: 30px;
 }
 
-.mailDesc {
-}
 .mailInputContainer > input {
   border: none;
   border-radius: 5px;

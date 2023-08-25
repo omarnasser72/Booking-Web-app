@@ -1,3 +1,7 @@
+.Hotel {
+  width: 100%;
+  display: flex;
+}
 .wholePage {
   background-color: #fffc55;
   width: 100%;
@@ -163,4 +167,7 @@
   font-size: 40px;
   color: #4d4d4d;
   cursor: pointer;
+}
+.reserveContainer {
+  margin: 50px;
 }

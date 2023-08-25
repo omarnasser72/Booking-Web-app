@@ -78,7 +78,9 @@ const Header = ({ type }) => {
           <div className="about">
             Here, you will find best hotel that fits you
           </div>
-          <button className="headerBtn">Sign in / Register</button>
+          <button className="headerBtn" onClick={() => navigate("/login")}>
+            Sign in / Register
+          </button>
           <div className="headerSearch">
             <div className="headerSearchItem">
               <FontAwesomeIcon icon={faBed} className="headerIcon" />
@@ -143,7 +145,7 @@ const Header = ({ type }) => {
                     </div>
                   </div>
                   <div className="optionItem">
-                    <span className="optionText">Childen</span>
+                    <span className="optionText">Children</span>
                     <div className="optionCounter">
                       <button
                         className="optionCounterBtn"

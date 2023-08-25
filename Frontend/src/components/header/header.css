@@ -1,11 +1,10 @@
 .header {
-  background-color: black;
+  background-color: rgb(66, 66, 66);
   color: #fffb06;
   display: block;
   justify-content: center;
   position: relative;
   z-index: 2;
-  font-family: monospace, "Lucida Console";
 }
 
 .headerContainer {
@@ -18,12 +17,12 @@
   display: flex;
   gap: 10px;
   margin-left: 2%;
-  background-color: black;
+  background-color: rgb(66, 66, 66);
 }
 .headerList.listMode {
   gap: 10px;
   margin-left: 2%;
-  background-color: black;
+  background-color: rgb(66, 66, 66);
   padding-bottom: 50px;
 }
 

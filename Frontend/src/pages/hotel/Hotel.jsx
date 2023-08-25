@@ -15,13 +15,18 @@ import { useLocation, useNavigate } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
 import { SearchContext } from "../../context/SearchContext";
 import { AuthContext } from "../../context/AuthContext";
+import Reserve from "../../components/Reserve/Reserve";
 const Hotel = () => {
   const location = useLocation();
   const id = location.pathname.split("/")[2];
+  console.log(id);
   const [slideNumber, setSlideNumber] = useState(0);
   const [isImgSliderOpen, setImgSlider] = useState(false);
+  const [open, setOpen] = useState(false);
   const [openBook, setOpenBook] = useState(false);
   const { data, loading, error } = useFetch(`/hotels/find/${id}`);
+  console.log(data);
+
   const navigate = useNavigate();
   const handleOpenImgSlider = (index) => {
     setSlideNumber(index);
@@ -39,6 +44,9 @@ const Hotel = () => {
     setSlideNumber(newSlideNumber);
   };
   const { date, options } = useContext(SearchContext);
+  console.log(date[0]);
+  const [noDateFound, setDate] = useState(date ? true : false);
+
   const { user } = useContext(AuthContext);
   const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
 
@@ -47,18 +55,25 @@ const Hotel = () => {
     const diffDays = Math.ceil(timeDiff / MILLISECONDS_PER_DAY);
     return diffDays;
   }
-
-  const days = dayDifference(date[0].startDate, date[0].endDate);
-
+  const days =
+    date[0].startDate !== undefined
+      ? dayDifference(date[0].startDate, date[0].endDate)
+      : 1;
+  console.log(date);
   const handleReserve = () => {
+    // if (noDateFound) {
+    // } else {
     if (user) {
-      setOpenBook(true);
+      navigate(`/hotels/reservation/${id}`);
+      //setOpenBook(true);
     } else {
-      navigate("/login");
+      navigate("/auth/login");
     }
+    //}
   };
+
   return (
-    <div>
+    <div className="Hotel">
       <div className="wholePage">
         <Navbar />
         <Header type="list" />
@@ -143,7 +158,8 @@ const Hotel = () => {
         <MailList />
         <Footer />
       </div>
-      {openBook}
+      {/* {noDateFound?: */}
+      {openBook && <Reserve setOpen={setOpenBook} hotelId={id} />}
     </div>
   );
 };

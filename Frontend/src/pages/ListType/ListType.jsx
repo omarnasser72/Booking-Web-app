@@ -1,4 +1,4 @@
-import "./list.css";
+import "./listType.scss";
 import Navbar from "../../components/navbar/Navbar.jsx";
 import Header from "../../components/header/Header.jsx";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -8,59 +8,22 @@ import { DateRange } from "react-date-range";
 import SearchItem from "../../components/searchItem/SearchItem";
 import useFetch from "../../hooks/useFetch";
 import { SearchContext } from "../../context/SearchContext";
-const List = () => {
+const ListType = () => {
   const location = useLocation();
   console.log(location);
-  const [destination, setDestination] = useState(location.state.destination);
-  const [date, setDate] = useState(location.state.date);
-  const [options, setOptions] = useState(location.state.options);
-  const [openDate, setOpenDate] = useState(false);
-  const [min, setMin] = useState(0);
-  const [max, setMax] = useState(9999);
-  const { data, loading, error, reFetch } = useFetch(
-    `/hotels?city=${destination}&min=${min || 0}&max=${max || 9999}`
-  );
+  const propertyType = location.pathname.split("/")[2];
+  const { data, loading, error, reFetch } = useFetch(`/${propertyType}`);
   console.log(data);
-
-  const handleCounter = (name, value) => {
-    setOptions((prev) => {
-      return {
-        ...prev,
-        [name]: value,
-      };
-    });
-  };
-  useEffect(() => {
-    console.log(date);
-  }, [date]);
-  useEffect(() => {
-    console.log(options);
-  }, [options]);
-
-  const { dispatch } = useContext(SearchContext);
-
-  const navigate = useNavigate();
-  const handleSearch = () => {
-    reFetch();
-    dispatch({
-      type: "NEW_SEARCH",
-      payload: { destination, date, options },
-    });
-  };
-
-  useEffect(() => {
-    handleSearch();
-  }, [destination, date, options]);
-
+  const msg =
+    propertyType !== "hotels" ? "Still working on it" : "No result to show";
   const h = (data.length / 4) * 200;
-
   return (
-    <div className="list">
+    <div>
       <Navbar />
       <Header type="list" />
       <div className="listContainer">
         <div className="listWrapper" style={{ height: `${h}vh` }}>
-          <div className="listSearch">
+          {/* <div className="listSearch">
             <h1 className="listSearchTitle">Search</h1>
             <div className="listSearchItem">
               <label>Destination</label>
@@ -142,7 +105,7 @@ const List = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
           <div className="listResult">
             {loading ? (
               <h3>loading</h3>
@@ -152,7 +115,7 @@ const List = () => {
                   data.map((item) => <SearchItem item={item} key={item._id} />)
                 ) : (
                   <div className="noResults">
-                    <h3>No result to show</h3>
+                    <h3>{msg}</h3>
                   </div>
                 )}
               </>
@@ -164,4 +127,4 @@ const List = () => {
   );
 };
 
-export default List;
+export default ListType;

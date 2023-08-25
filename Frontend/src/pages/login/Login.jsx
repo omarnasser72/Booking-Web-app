@@ -3,7 +3,6 @@ import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./login.css";
-import { API_URL } from "../../config";
 const Login = () => {
   const [credentials, setCredentials] = useState({
     username: undefined,
@@ -12,18 +11,26 @@ const Login = () => {
   console.log(credentials);
   const { user, loading, error, dispatch } = useContext(AuthContext);
   const navigate = useNavigate();
-
+  console.log(user);
   const handleChange = (e) => {
     setCredentials((prev) => ({ ...prev, [e.target.id]: e.target.value }));
   };
 
   const handleClick = async (e) => {
     e.preventDefault();
-    dispatch({ type: "LOGINSTART" });
+    dispatch({ type: "LOGIN_START" });
     try {
       const res = await axios.post(`/auth/login`, credentials);
-      dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
-      navigate("/");
+      console.log(res.data);
+      if (res.data) {
+        dispatch({ type: "LOGIN_SUCCESS", payload: res.data.details });
+        navigate("/");
+      } else {
+        dispatch({
+          type: "LOGIN_FALIURE",
+          payload: { message: "You're not authorized" },
+        });
+      }
     } catch (error) {
       dispatch({ type: "LOGIN_FALIURE", payload: error.response.data });
     }
@@ -32,6 +39,7 @@ const Login = () => {
   return (
     <div className="login">
       <div className="loginContainer">
+        <h1>Welcome to My Nights</h1>
         <input
           type="text"
           className="loginInput"
@@ -50,6 +58,20 @@ const Login = () => {
           Login
         </button>
         {error && <span>{error.message}</span>}
+        <div className="registerNow">
+          <pre>
+            you don't have account ?{" "}
+            <p
+              onClick={() => {
+                navigate("/register");
+              }}
+            >
+              {" "}
+              sign up{" "}
+            </p>{" "}
+            Now!
+          </pre>
+        </div>
       </div>
     </div>
   );

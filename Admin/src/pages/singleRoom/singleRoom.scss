@@ -1,0 +1,130 @@
+.single {
+  width: 100%;
+  display: flex;
+  .wrapper {
+    width: 100%;
+    display: flex;
+    .singleContainer {
+      flex: 6;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+      gap: 20px;
+      .slider {
+        position: sticky;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: #afa6a66c;
+        z-index: 999;
+        display: flex;
+        align-items: center;
+        object-fit: cover;
+        .slideWrapper {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          .sliderImg {
+            height: 80vh;
+          }
+        }
+        .closeImgSlider {
+          position: absolute;
+          top: 0px;
+          right: 0px;
+          font-size: 30px;
+          color: #4d4d4d;
+          cursor: pointer;
+        }
+        .leftArrow {
+          margin-right: 100px;
+          margin-left: 50px;
+          font-size: 40px;
+          color: #4d4d4d;
+          cursor: pointer;
+        }
+        .rightArrow {
+          margin-left: 100px;
+          margin-right: 50px;
+          font-size: 40px;
+          color: #4d4d4d;
+          cursor: pointer;
+        }
+      }
+      .sideBar {
+        width: 100%;
+        height: 100%;
+      }
+      .sideNavbars {
+        top: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+      }
+      .infoWrapper {
+        width: 80%;
+        align-self: center;
+        -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+        box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+        position: relative;
+        padding: 20px;
+        margin-left: 20px;
+        margin-bottom: 20px;
+        .info {
+          width: 100%;
+          .editBtn {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: #fcff5d;
+            border: none;
+            border-radius: 0px 0px 0px 5px;
+            padding: 5px;
+            font-weight: 500;
+          }
+          .title {
+            font-size: 20px;
+            margin-bottom: 20px;
+          }
+          .item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            .left {
+              display: flex;
+              .roomImage {
+                img {
+                  cursor: pointer;
+                  width: 100px;
+                  height: 100px;
+                  margin: 10px;
+                }
+              }
+            }
+          }
+          .right {
+            .details {
+              color: gray;
+              .itemTitle {
+                color: black;
+                margin-bottom: 15px;
+              }
+              .detailItem {
+                margin-bottom: 15px;
+                .itemKey {
+                  font-weight: 600;
+                  margin-right: 10px;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,62 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  border-bottom: 0.5 solid rgb(213, 228, 85);
+  font-size: 14px;
+  color: #555;
+  margin-top: 0px;
+  .wrapper {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .search {
+      display: flex;
+      padding: 3px;
+      align-items: center;
+      -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
+      box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.47);
+      input {
+        border: none;
+        outline: none;
+        //background: transparent;
+      }
+      .icon {
+        cursor: pointer;
+      }
+    }
+    .items {
+      display: flex;
+      align-items: center;
+
+      .item {
+        display: flex;
+        align-items: center;
+        margin-right: 20px;
+        position: relative;
+        cursor: pointer;
+
+        .avatar {
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+        }
+        .counter {
+          position: absolute;
+          width: 15px;
+          height: 15px;
+          color: white;
+          background-color: red;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          top: -5px;
+          right: -5px;
+        }
+      }
+    }
+  }
+}

@@ -2,10 +2,15 @@ import Express from "express";
 import { verifyAdmin, verifyToken, verifyUser } from "../utils/verifyUser.js";
 import {
   deleteUser,
+  getAllUsers,
   getUser,
   updateUser,
 } from "../controllers/userController.js";
-import { getAllHotles } from "../controllers/hotelController.js";
+
+import {
+  deleteReservation,
+  getUserReservations,
+} from "../controllers/reservationController.js";
 
 const router = Express.Router();
 
@@ -22,11 +27,18 @@ router.get("/checkAdmin/:id", verifyAdmin, (req, res, next) => {
 });
 
 //UPDATE
-router.put("/:id", verifyUser, updateUser);
+router.put("/:id", updateUser);
 //DELETE
-router.delete("/:id", verifyUser, deleteUser);
+router.delete("/:id", verifyAdmin, deleteUser);
 //GET
-router.get("/:id", verifyUser, getUser);
+router.get("/:id", getUser);
 //GETALL
-router.get("/", verifyAdmin, getAllHotles);
+router.get("/", verifyAdmin, getAllUsers);
+
+//GET RESERVATION
+router.get("/reservations/:id", getUserReservations);
+
+//DELETE RESERVATION
+router.delete("/reservations/:id", deleteReservation);
+
 export default router;

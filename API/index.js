@@ -5,6 +5,8 @@ import authRoute from "./routes/auth.js";
 import usersRoute from "./routes/users.js";
 import hotelsRoute from "./routes/hotels.js";
 import roomsRoute from "./routes/rooms.js";
+import reservationsRoute from "./routes/reservations.js";
+import rateRoute from "./routes/hotelRates.js";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 const app = express();
@@ -29,6 +31,8 @@ app.use("/auth", authRoute); //  when we call in web app this  "/auth" we go to 
 app.use("/hotels", hotelsRoute);
 app.use("/users", usersRoute);
 app.use("/rooms", roomsRoute);
+app.use("/reservations", reservationsRoute);
+app.use("/rates", rateRoute);
 
 //error handler
 app.use((err, req, res, next) => {

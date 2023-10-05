@@ -14,8 +14,10 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useNavigate } from "react-router-dom";
 
-const PHONE_REGEX = /^(?:\+1)?(?:\(\d{3}\)|\d{3})[-.\s]?\d{3}[-.\s]?\d{4}$/;
+const PHONE_REGEX =
+  /^(?:\d{3}\s?\d{4}\s?\d{4}|\+\d{1,3}\s?\(\d{1,4}\)\s?\d{1,4}(?:[-\s]?\d{1,4})*|\d{10,})$/;
 const CITY_REGEX = /^[A-Za-z\s\']*([A-Za-z][A-Za-z\s\']*){3,}$/;
 const COUNTRY_REGEX = /^[A-Za-z\s\']*([A-Za-z][A-Za-z\s\']*){3,}$/;
 
@@ -26,6 +28,7 @@ const Profile = () => {
     error,
     reFetch,
   } = useContext(AuthContext);
+  const navigate = useNavigate();
   const [user, setUser] = useState(fetchedUser);
   const [userInfo, setUserInfo] = useState(null);
   const [info, setInfo] = useState({});
@@ -145,6 +148,9 @@ const Profile = () => {
     setUpdateMode(true);
     setUpdateBtn(true);
     setEditBtn(false);
+  };
+  const handleChangePwd = async (e) => {
+    navigate(`/profile/changePwd`);
   };
 
   const handleUpdate = async (e) => {
@@ -525,9 +531,14 @@ const Profile = () => {
                 </>
               )}
               {editBtn && (
-                <button className="Btn" onClick={handleEdit}>
-                  Edit Profile
-                </button>
+                <>
+                  <button className="Btn" onClick={handleEdit}>
+                    Edit Profile
+                  </button>
+                  <button className="Btn" onClick={handleChangePwd}>
+                    ChangePassword
+                  </button>
+                </>
               )}
               {updateBtn && (
                 <button className="Btn" onClick={() => handleUpdate()}>

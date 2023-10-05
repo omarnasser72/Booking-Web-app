@@ -13,6 +13,7 @@
     flex-direction: column;
     justify-content: space-between;
     gap: 10px;
+    color: rgb(236, 250, 48);
     .title {
       font-weight: bold;
       font-size: 20px;
@@ -22,6 +23,7 @@
       width: max-content;
       font-size: 15px;
       color: rgb(136, 136, 136);
+      cursor: pointer;
     }
     .percentage {
       display: flex;
@@ -38,6 +40,9 @@
       font-size: 25px;
       padding: 5px;
       align-self: flex-end;
+    }
+    .counter {
+      color: rgb(236, 250, 48);
     }
   }
 }

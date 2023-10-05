@@ -25,6 +25,7 @@ const ROOM_DESCRIPTION_REGEX = /^.{10,500}$/;
 const ROOM_PRICE_REGEX = /^\d+(\.\d{2})?$/;
 const MAX_PEOPLE_REGEX = /^(?:[1-9]|10)$/;
 const NUMBER_OF_ROOMS_REGEX = /^([1-9]|[1-9][0-9]|100)$/;
+const allowedExtensions = /^[^.\/]+\.(jpg|jpeg|png|gif|bmp)$/i;
 
 const SingleRoom = () => {
   const location = useLocation();
@@ -70,6 +71,8 @@ const SingleRoom = () => {
   const [minNoOfRooms, setMinNoOfRooms] = useState(
     room.length > 0 ? room.roomNumbers.length - 1 : -1
   );
+
+  const [imgUrl, setImgUrl] = useState("");
 
   const [submitting, setSubmitting] = useState(false);
 
@@ -168,6 +171,7 @@ const SingleRoom = () => {
     else if (e.target.id === "desc") setRoomDesc(e.target.value);
     else if (e.target.id === "price") setRoomPrice(e.target.value);
     else if (e.target.id === "maxPeople") setRoomMaxPeople(e.target.value);
+    else if (e.target.id === "photo") setImgUrl(e.target.value);
 
     setInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }));
     console.log(info);
@@ -195,6 +199,10 @@ const SingleRoom = () => {
     console.log(isImgSliderOpen);
   }, [isImgSliderOpen]);
 
+  useEffect(() => {
+    console.log(allowedExtensions.test("pexels-pixabay-262048.jpg"));
+  }, []);
+
   const handleOpenImgSlider = (index) => {
     setSlideNumber(index);
     console.log(slideNumber);
@@ -220,6 +228,13 @@ const SingleRoom = () => {
     console.log(currPhotos);
   };
 
+  const handleImgUrl = (e) => {
+    e.preventDefault();
+    if (imgUrl.length > 0)
+      setCurrPhotos((currPhotos) => currPhotos.concat(imgUrl));
+    setImgUrl("");
+  };
+
   const handleSubmission = async (e) => {
     setSubmitting(true);
     e.preventDefault();
@@ -243,11 +258,15 @@ const SingleRoom = () => {
       if (!validRoomTitle) setRoomTitleFocus(true);
     } else {
       try {
-        console.log(addedRooms);
-        const addedRoomNumbers = addedRooms?.map((roomNo) => ({
-          number: roomNo,
-          ununavailableDates: [],
-        }));
+        console.log(addedRooms === "");
+
+        const addedRoomNumbers =
+          addedRooms !== ""
+            ? addedRooms.map((roomNo) => ({
+                number: roomNo,
+                ununavailableDates: [],
+              }))
+            : "";
         const roomNumbers = rooms.concat(addedRoomNumbers);
         console.log(roomNumbers);
         console.log(files);
@@ -292,7 +311,11 @@ const SingleRoom = () => {
 
               <div className="slideWrapper">
                 <img
-                  src={`${process.env.PUBLIC_URL}/upload/rooms/${room.images[slideNumber]}`}
+                  src={
+                    allowedExtensions.test(room.images[slideNumber])
+                      ? `${process.env.PUBLIC_URL}/upload/rooms/${room.images[slideNumber]}`
+                      : room.images[slideNumber]
+                  }
                   alt=""
                   className="sliderImg"
                 />
@@ -324,9 +347,9 @@ const SingleRoom = () => {
                             <img
                               onClick={() => handleOpenImgSlider(i)}
                               src={
-                                image.includes("http")
-                                  ? image
-                                  : `${process.env.PUBLIC_URL}/upload/rooms/${image}`
+                                allowedExtensions.test(image)
+                                  ? `${process.env.PUBLIC_URL}/upload/rooms/${image}`
+                                  : image
                               }
                               alt=""
                             />
@@ -364,9 +387,9 @@ const SingleRoom = () => {
                           <div className="eachImg" key={index}>
                             <img
                               src={
-                                photo.includes("http")
-                                  ? photo
-                                  : `${process.env.PUBLIC_URL}/upload/rooms/${photo}`
+                                allowedExtensions.test(photo)
+                                  ? `${process.env.PUBLIC_URL}/upload/rooms/${photo}`
+                                  : photo
                               }
                               alt=""
                               key={index}
@@ -391,6 +414,17 @@ const SingleRoom = () => {
                       onChange={(e) => setFiles(e.target.files)}
                       style={{ display: "none" }}
                     />
+                  </div>
+                  <div className="uploadUrl">
+                    <input
+                      id="photo"
+                      type="text"
+                      value={imgUrl}
+                      onChange={handleChange}
+                    />
+                    <button className="uploadImage" onClick={handleImgUrl}>
+                      Upload
+                    </button>
                   </div>
                 </div>
                 <div className="right">

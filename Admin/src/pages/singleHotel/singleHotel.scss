@@ -198,6 +198,8 @@
           .left {
             width: 50%;
             display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             .images {
               display: flex;
               flex-wrap: wrap;
@@ -216,6 +218,21 @@
                   right: -15%;
                   cursor: pointer;
                 }
+              }
+            }
+            .uploadUrl {
+              input {
+                border-radius: 5px;
+                border: 1px solid;
+                margin-right: 5px;
+              }
+              button {
+                border: none;
+                border-radius: 5px;
+                background-color: #fffb06;
+                font-weight: 700;
+                padding: 5px;
+                cursor: pointer;
               }
             }
           }

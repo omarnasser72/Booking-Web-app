@@ -19,7 +19,8 @@ import "react-datepicker/dist/react-datepicker.css";
 const USERNAME_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-const PHONE_REGEX = /^(?:\+1)?(?:\(\d{3}\)|\d{3})[-.\s]?\d{3}[-.\s]?\d{4}$/;
+const PHONE_REGEX =
+  /^(?:\d{3}\s?\d{4}\s?\d{4}|\+\d{1,3}\s?\(\d{1,4}\)\s?\d{1,4}(?:[-\s]?\d{1,4})*|\d{10,})$/;
 const CITY_REGEX = /^[A-Za-z\s\']+$/;
 const COUNTRY_REGEX = /^[A-Za-z\s\']+$/;
 const AGE_REGEX = /^(?:[1-9]|[1-9][0-9]|1[0-4][0-9]|150)$/;

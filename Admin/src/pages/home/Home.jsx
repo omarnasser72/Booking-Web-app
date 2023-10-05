@@ -24,16 +24,12 @@ const Home = () => {
         </div>
         <div className="widgetContainer">
           <Widget type="user" />
-          <Widget type="order" />
-          <Widget type="earning" />
-          <Widget type="balance" />
-        </div>
-        <div className="charts">
-          <Featured />
-          <Chart title="Last 6 months (Revenue)" aspect={2 / 1} />
+          <Widget type="hotels" />
+          <Widget type="rooms" />
+          <Widget type="reservations" />
         </div>
         <div className="listContainer">
-          <div className="listTitle">Latest Transactions</div>
+          <div className="listTitle">Latest Reservations</div>
           <List />
         </div>
       </div>

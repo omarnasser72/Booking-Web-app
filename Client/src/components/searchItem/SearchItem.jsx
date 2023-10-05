@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import "./searchItem.css";
 import { useState, useEffect } from "react";
+const allowedExtensions = /^[^.\/]+\.(jpg|jpeg|png|gif|bmp)$/i;
 
 const SearchItem = ({ item }) => {
   const [rateCategory, setRateCategory] = useState("");
@@ -19,7 +20,15 @@ const SearchItem = ({ item }) => {
 
   return (
     <div className="searchItem">
-      <img src={item.photos[0]} alt="" className="searchItemImg" />
+      <img
+        src={
+          allowedExtensions.test(item.photos[0])
+            ? `${process.env.PUBLIC_URL}/upload/hotels/${item.photos[0]}`
+            : item.photos[0]
+        }
+        alt=""
+        className="searchItemImg"
+      />
       <div className="searchItemDesc">
         <h1 className="searchItemTitle">{item.name}</h1>
         <span className="searchItemDistance">
@@ -34,11 +43,13 @@ const SearchItem = ({ item }) => {
         </span>
       </div>
       <div className="searchItemDetails">
-        {item.rating && (
+        {item.rating ? (
           <div className="searchItemRating">
             <span> {rateCategory}</span>
             <button>{item.rating}</button>
           </div>
+        ) : (
+          ""
         )}
         <div className="searchItemDetailsText">
           <span className="searchItemPrice">${item.cheapestPrice}</span>

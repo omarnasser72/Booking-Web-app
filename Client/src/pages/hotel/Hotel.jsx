@@ -18,6 +18,7 @@ import { AuthContext } from "../../context/AuthContext";
 import Reserve from "../../components/Reserve/Reserve";
 import { Rating } from "@mui/material";
 import axios from "axios";
+const allowedExtensions = /^[^.\/]+\.(jpg|jpeg|png|gif|bmp)$/i;
 
 const Hotel = () => {
   const location = useLocation();
@@ -53,7 +54,7 @@ const Hotel = () => {
 
     setSlideNumber(newSlideNumber);
   };
-  const { date, options } = useContext(SearchContext);
+  const { date } = useContext(SearchContext);
   console.log(date);
   const { user } = useContext(AuthContext);
   const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
@@ -65,7 +66,7 @@ const Hotel = () => {
   }
   const days =
     date[0].startDate !== undefined
-      ? dayDifference(date[0].startDate, date[0].endDate)
+      ? Math.max(1, dayDifference(date[0].startDate, date[0].endDate))
       : 1;
   console.log(date);
 
@@ -104,6 +105,10 @@ const Hotel = () => {
     console.log(rate);
   }, [rate]);
 
+  useEffect(() => {
+    console.log(allowedExtensions.test("pexels-jonas-togo-2907196.jpg"));
+  }, []);
+
   return (
     <div className="Hotel">
       <div className="wholePage">
@@ -130,7 +135,11 @@ const Hotel = () => {
 
                 <div className="slideWrapper">
                   <img
-                    src={hotel.photos[slideNumber]}
+                    src={
+                      allowedExtensions.test(hotel.photos[slideNumber])
+                        ? `${process.env.PUBLIC_URL}/upload/hotels/${hotel.photos[slideNumber]}`
+                        : hotel.photos[slideNumber]
+                    }
                     alt=""
                     className="sliderImg"
                   />
@@ -189,7 +198,12 @@ const Hotel = () => {
                   <div className="hotelImageWrapper" key={i}>
                     <img
                       onClick={() => handleOpenImgSlider(i)}
-                      src={photo}
+                      src={
+                        allowedExtensions.test(photo)
+                          ? /*`${process.env.PUBLIC_URL}*/
+                            `/upload/hotels/${photo}`
+                          : photo
+                      }
                       alt=""
                       className="hotelImg"
                     />

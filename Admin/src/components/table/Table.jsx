@@ -6,95 +6,159 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const List = () => {
-  const rows = [
-    {
-      id: 1143155,
-      product: "Acer Nitro 5",
-      img: "https://m.media-amazon.com/images/I/81bc8mA3nKL._AC_UY327_FMwebp_QL65_.jpg",
-      customer: "John Smith",
-      date: "1 March",
-      amount: 785,
-      method: "Cash on Delivery",
-      status: "Approved",
-    },
-    {
-      id: 2235235,
-      product: "Playstation 5",
-      img: "https://m.media-amazon.com/images/I/31JaiPXYI8L._AC_UY327_FMwebp_QL65_.jpg",
-      customer: "Michael Doe",
-      date: "1 March",
-      amount: 900,
-      method: "Online Payment",
-      status: "Pending",
-    },
-    {
-      id: 2342353,
-      product: "Redragon S101",
-      img: "https://m.media-amazon.com/images/I/71kr3WAj1FL._AC_UY327_FMwebp_QL65_.jpg",
-      customer: "John Smith",
-      date: "1 March",
-      amount: 35,
-      method: "Cash on Delivery",
-      status: "Pending",
-    },
-    {
-      id: 2357741,
-      product: "Razer Blade 15",
-      img: "https://m.media-amazon.com/images/I/71wF7YDIQkL._AC_UY327_FMwebp_QL65_.jpg",
-      customer: "Jane Smith",
-      date: "1 March",
-      amount: 920,
-      method: "Online",
-      status: "Approved",
-    },
-    {
-      id: 2342355,
-      product: "ASUS ROG Strix",
-      img: "https://m.media-amazon.com/images/I/81hH5vK-MCL._AC_UY327_FMwebp_QL65_.jpg",
-      customer: "Harold Carol",
-      date: "1 March",
-      amount: 2000,
-      method: "Online",
-      status: "Pending",
-    },
-  ];
+  const [fetchedReservations, setFetchedReservations] = useState([]);
+  const [reservations, setReservations] = useState([]);
+  const [loading, setLoading] = useState("true");
+
+  const getLastReservations = async () => {
+    setFetchedReservations((await axios.get(`reservations`)).data);
+  };
+  useEffect(() => {
+    getLastReservations();
+    console.log(fetchedReservations);
+  }, []);
+
+  useEffect(() => {
+    // Fetch related data for each reservation
+    const fetchReservationDetails = async () => {
+      try {
+        if (fetchedReservations.length > 0) {
+          const last10Reservations = fetchedReservations.slice(-10);
+          const reservationsWithData = await Promise.all(
+            last10Reservations.map(async (fetchedReservation) => {
+              // Fetch user data
+              const userResponse = await axios.get(
+                `users/${fetchedReservation.userId}`
+              );
+              const username = userResponse.data?.username;
+              const userImg = userResponse.data?.img;
+
+              // Fetch hotel data
+              const hotelResponse = await axios.get(
+                `hotels/find/${fetchedReservation.hotelId}`
+              );
+              const hotel = hotelResponse.data?.name;
+
+              // Fetch room type data
+              const roomTypeResponse = await axios.get(
+                `rooms/${fetchedReservation.roomTypeId}`
+              );
+              const roomType = roomTypeResponse.data?.title;
+
+              // Fetch room number data
+              const roomNumberResponse = await axios.get(
+                `rooms/${fetchedReservation.roomTypeId}/${fetchedReservation.roomNumberId}`
+              );
+              const roomNumber = roomNumberResponse.data?.number;
+
+              return {
+                _id: fetchedReservation._id,
+                username,
+                userImg: userImg,
+                hotel,
+                roomType,
+                roomNumber,
+                reservationDuration: fetchedReservation.reservationDuration,
+                cost: fetchedReservation.cost,
+              };
+            })
+          );
+          setLoading(false);
+          setReservations(reservationsWithData);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchReservationDetails();
+    console.log(fetchedReservations);
+  }, [fetchedReservations]);
+
   return (
     <TableContainer component={Paper} className="table">
-      <Table sx={{ minWidth: 650 }} aria-aria-label="simple tabele">
-        <TableHead>
-          <TableRow>
-            <TableCell className="tableCell">Tracking ID</TableCell>
-            <TableCell className="tableCell">Product</TableCell>
-            <TableCell className="tableCell">Customer</TableCell>
-            <TableCell className="tableCell">Date</TableCell>
-            <TableCell className="tableCell">Amount</TableCell>
-            <TableCell className="tableCell">Payment Method</TableCell>
-            <TableCell className="tableCell">Status</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.id}>
-              <TableCell className="tableCell">{row.id}</TableCell>
-              <TableCell className="tableCell">
-                <div className="cellWrapper">
-                  <img src={row.img} alt="" className="image" />
-                  {row.product}
-                </div>
-              </TableCell>
-              <TableCell className="tableCell">{row.customer}</TableCell>
-              <TableCell className="tableCell">{row.date}</TableCell>
-              <TableCell className="tableCell">{row.amount}</TableCell>
-              <TableCell className="tableCell">{row.method}</TableCell>
-              <TableCell className="tableCell">
-                <span className={`status ${row.status}`}>{row.status}</span>
-              </TableCell>
+      {loading ? (
+        <div className="loading">loading Reservations ...</div>
+      ) : (
+        <Table sx={{ minWidth: 650 }} aria-label="simple tabele">
+          <TableHead>
+            <TableRow>
+              <TableCell className="tableCell">Reservation ID</TableCell>
+              <TableCell className="tableCell">User's Profile Image</TableCell>
+              <TableCell className="tableCell">User</TableCell>
+              <TableCell className="tableCell">Hotel</TableCell>
+              <TableCell className="tableCell">Room Type</TableCell>
+              <TableCell className="tableCell">Room Number</TableCell>
+              <TableCell className="tableCell">Duration</TableCell>
+              <TableCell className="tableCell">Cost</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHead>
+          <TableBody>
+            {reservations.map((reservation) => (
+              <TableRow key={reservation.id}>
+                <TableCell className="tableCell">{reservation._id}</TableCell>
+                <TableCell className="tableCell">
+                  <div className="cellWrapper">
+                    <img
+                      src={
+                        reservation.userImg !== undefined
+                          ? reservation.userImg.includes("http")
+                            ? reservation.userImg
+                            : `/upload/profileImages/${reservation.userImg}`
+                          : "https://icon-library.com/images/no-profile-picture-icon/no-profile-picture-icon-18.jpg"
+                      }
+                      alt=""
+                      className="image"
+                    />
+                  </div>
+                </TableCell>
+                <TableCell className="tableCell">
+                  {reservation.username}
+                </TableCell>
+                <TableCell className="tableCell">{reservation.hotel}</TableCell>
+                <TableCell className="tableCell">
+                  {reservation.roomType}
+                </TableCell>
+                <TableCell className="tableCell">
+                  {reservation.roomNumber}
+                </TableCell>
+                {/* <TableCell className="tableCell">
+                <span className={`status ${row.status}`}>{row.status}</span>
+              </TableCell> */}
+                <TableCell className="tableCell">
+                  {
+                    new Date(
+                      new Date(
+                        reservation.reservationDuration.startDate
+                      ).getTime() +
+                        24 * 60 * 60 * 1000
+                    )
+                      .toISOString()
+                      .split("T")[0]
+                  }
+                  {" to "}
+                  {
+                    new Date(
+                      new Date(
+                        reservation.reservationDuration.endDate
+                      ).getTime() +
+                        24 * 60 * 60 * 1000
+                    )
+                      .toISOString()
+                      .split("T")[0]
+                  }
+                </TableCell>
+
+                <TableCell className="tableCell">{reservation.cost}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      )}
     </TableContainer>
   );
 };

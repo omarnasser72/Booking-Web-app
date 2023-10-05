@@ -1,6 +1,7 @@
 import Express from "express";
 import { verifyAdmin, verifyToken, verifyUser } from "../utils/verifyUser.js";
 import {
+  changePwd,
   deleteUser,
   getAllUsers,
   getUser,
@@ -28,6 +29,7 @@ router.get("/checkAdmin/:id", verifyAdmin, (req, res, next) => {
 
 //UPDATE
 router.put("/:id", updateUser);
+router.put("/changePwd/:id", changePwd);
 //DELETE
 router.delete("/:id", verifyAdmin, deleteUser);
 //GET

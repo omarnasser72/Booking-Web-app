@@ -6,11 +6,13 @@ export const createReservation = async (req, res, next) => {
   const startDate = moment.tz(req.body.reservationDuration.startDate, "UTC");
   const endDate = moment.tz(req.body.reservationDuration.endDate, "UTC");
 
-  const newReservation = new Reservation(
-    req.body,
-    (reservationDuration.startDate = startDate),
-    (reservationDuration.endDate = endDate)
-  );
+  const newReservation = new Reservation({
+    ...req.body,
+    reservationDuration: {
+      startDate,
+      endDate,
+    },
+  });
   try {
     const savedReservation = await newReservation.save();
     res.status(200).json(savedReservation);

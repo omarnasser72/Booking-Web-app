@@ -11,6 +11,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const USERNAME_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
+const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
 const Login = () => {
   const [credentials, setCredentials] = useState({
@@ -45,9 +46,8 @@ const Login = () => {
   }, [username]);
 
   useEffect(() => {
-    console.log(pwd);
     console.log(validPwd);
-    pwd.length >= 4 ? setValidPwd(true) : setValidPwd(false);
+    setValidPwd(PWD_REGEX.test(pwd));
   }, [pwd]);
 
   const handleChange = (e) => {

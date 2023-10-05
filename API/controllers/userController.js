@@ -3,6 +3,51 @@ import bcrypt from "bcrypt";
 import { createError } from "../utils/error.js";
 import nodemailer from "nodemailer";
 
+export const changePwd = async (req, res, next) => {
+  try {
+    const email = req.body.email;
+    const { newPwd } = req.body;
+    const user = await User.findById(req.params.id);
+    if (!bcrypt.compareSync(req.body.password, user.password))
+      return next(createError(400, "Wrong Password !"));
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.id,
+      {
+        $set: {
+          ...req.body,
+          password: bcrypt.hashSync(newPwd, 10),
+        },
+      },
+      { new: true }
+    );
+    console.log("updatedUser.password: ", updatedUser.password);
+    const transport = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.PASSWORD,
+      },
+    });
+
+    const mailOptions = {
+      from: process.env.EMAIL,
+      to: email,
+      subject: "Changing Password",
+      html: "<h2>You have changed your password on My Nights web app</h2>",
+    };
+
+    transport.sendMail(mailOptions, function (err, info) {
+      if (err) next(err);
+      console.log("email sent:", info.response);
+    });
+
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const updateUser = async (req, res, next) => {
   try {
     const email = req.body.email;
@@ -55,7 +100,7 @@ export const updateUser = async (req, res, next) => {
       from: process.env.EMAIL,
       to: email,
       subject: "Update Profile",
-      html: "<h2>You just have updated your profile on My Nights web app</h2>",
+      html: "<h2>You have just updated your profile on My Nights web app</h2>",
     };
 
     transport.sendMail(mailOptions, function (err, info) {

@@ -10,17 +10,20 @@ import useFetch from "../../hooks/useFetch";
 import { SearchContext } from "../../context/SearchContext";
 const List = () => {
   const location = useLocation();
-  console.log(location);
   const [destination, setDestination] = useState(location.state.destination);
   const [date, setDate] = useState(location.state.date);
   const [options, setOptions] = useState(location.state.options);
   const [openDate, setOpenDate] = useState(false);
   const [min, setMin] = useState(0);
   const [max, setMax] = useState(9999);
-  const { data, loading, error, reFetch } = useFetch(
+  const {
+    data: hotels,
+    loading,
+    error,
+    reFetch,
+  } = useFetch(
     `/hotels?city=${destination}&min=${min || 0}&max=${max || 9999}`
   );
-  console.log(data);
 
   const handleCounter = (name, value) => {
     setOptions((prev) => {
@@ -30,16 +33,8 @@ const List = () => {
       };
     });
   };
-  useEffect(() => {
-    console.log(date);
-  }, [date]);
-  useEffect(() => {
-    console.log(options);
-  }, [options]);
-
   const { dispatch } = useContext(SearchContext);
 
-  const navigate = useNavigate();
   const handleSearch = () => {
     reFetch();
     dispatch({
@@ -47,12 +42,19 @@ const List = () => {
       payload: { destination, date, options },
     });
   };
+  useEffect(() => {
+    console.log(date);
+  }, [date]);
+  useEffect(() => {
+    console.log(options);
+  }, [options]);
 
   useEffect(() => {
+    console.log(destination, min, max);
     handleSearch();
   }, [destination, date, options]);
 
-  const h = (data.length / 4) * 200;
+  const h = (hotels.length / 4) * 200;
 
   return (
     <div className="list">
@@ -148,8 +150,10 @@ const List = () => {
               <h3>loading</h3>
             ) : (
               <>
-                {data.length > 0 ? (
-                  data.map((item) => <SearchItem item={item} key={item._id} />)
+                {hotels.length > 0 ? (
+                  hotels.map((item) => (
+                    <SearchItem item={item} key={item._id} />
+                  ))
                 ) : (
                   <div className="noResults">
                     <h3>No result to show</h3>

@@ -7,6 +7,7 @@ import {
   getAllHotles,
   getHotel,
   getHotelRooms,
+  getHotels,
   updateHotel,
 } from "../controllers/hotelController.js";
 import { verifyAdmin, verifyUser } from "../utils/verifyUser.js";
@@ -22,8 +23,12 @@ router.put("/:id", verifyUser, updateHotel);
 router.delete("/:id", verifyAdmin, deleteHotel);
 //GET
 router.get("/find/:id", getHotel);
-//GETALL
-router.get("/", getAllHotles);
+// GET HOTELS
+router.get("/", (req, res) => {
+  Object.keys(req.query).length !== 0
+    ? getHotels(req, res)
+    : getAllHotles(req, res);
+});
 
 //-----------------------
 

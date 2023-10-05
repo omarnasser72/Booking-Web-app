@@ -16,6 +16,7 @@ import Profile from "./pages/profile/Profile";
 import { useContext } from "react";
 import Reservation from "./pages/Reservation/Reservation";
 import ListType from "./pages/ListType/ListType";
+import ChangePwd from "./pages/change pwd/ChangePwd";
 
 function App() {
   const ProtectedRoute = ({ element }) => {
@@ -34,14 +35,20 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/">
+            <Route index element={<ProtectedRoute element={<Home />} />} />
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
-            <Route index element={<ProtectedRoute element={<Home />} />} />
           </Route>
-          <Route
-            path="/profile"
-            element={<ProtectedRoute element={<Profile />} />}
-          />
+          <Route>
+            <Route path="/profile">
+              <Route index element={<ProtectedRoute element={<Profile />} />} />
+              <Route
+                path="changePwd"
+                element={<ProtectedRoute element={<ChangePwd />} />}
+              />
+            </Route>
+          </Route>
+
           <Route
             path="/hotels"
             element={<ProtectedRoute element={<List />} />}

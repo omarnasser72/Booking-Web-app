@@ -29,6 +29,7 @@ const TITLE_REGEX = /^[A-Za-z0-9\s.,'()-]{3,}$/;
 const DESC_REGEX = /^.{10,500}$/;
 const PRICE_REGEX = /^\d+(\.\d{2})?$/;
 const COUNTRY_REGEX = /^[A-Za-z\s.'-]{3,}$/;
+const allowedExtensions = /^[^.\/]+\.(jpg|jpeg|png|gif|bmp)$/i;
 
 const SingleHotel = () => {
   const navigate = useNavigate();
@@ -96,6 +97,8 @@ const SingleHotel = () => {
   const [rating, setRating] = useState("");
   const [validRating, setValidRating] = useState(false);
   const [ratingFocus, setRatingFocus] = useState(false);
+
+  const [imgUrl, setImgUrl] = useState("");
 
   const [errMsg, setErrMsg] = useState("");
 
@@ -281,7 +284,7 @@ const SingleHotel = () => {
     else if (e.target.id === "distance") setDistance(e.target.value);
     else if (e.target.id === "type") setType(e.target.value);
     else if (e.target.id === "featured") setFeatured(e.target.value);
-
+    else if (e.target.id === "photo") setImgUrl(e.target.value);
     setInfo((prev) => ({ ...prev, [e.target.id]: e.target.value }));
   };
 
@@ -359,6 +362,14 @@ const SingleHotel = () => {
     console.log(currPhotos);
   };
 
+  const handleImgUrl = (e) => {
+    e.preventDefault();
+
+    if (imgUrl.length > 0)
+      setCurrPhotos((currPhotos) => currPhotos.concat(imgUrl));
+    setImgUrl("");
+  };
+
   return (
     <div className="single">
       <div className="wrapper">
@@ -386,9 +397,9 @@ const SingleHotel = () => {
               <div className="slideWrapper">
                 <img
                   src={
-                    hotel.photos[slideNumber].includes("http")
-                      ? hotel.photos[slideNumber]
-                      : `${process.env.PUBLIC_URL}/upload/hotels/${hotel.photos[slideNumber]}`
+                    allowedExtensions.test(hotel.photos[slideNumber])
+                      ? `${process.env.PUBLIC_URL}/upload/hotels/${hotel.photos[slideNumber]}`
+                      : hotel.photos[slideNumber]
                   }
                   alt=""
                   className="sliderImg"
@@ -452,11 +463,10 @@ const SingleHotel = () => {
                       return (
                         <img
                           src={
-                            photo.includes("http")
-                              ? photo
-                              : `${process.env.PUBLIC_URL}/upload/hotels/${photo}`
+                            allowedExtensions.test(photo)
+                              ? `${process.env.PUBLIC_URL}/upload/hotels/${photo}`
+                              : photo
                           }
-                          //src={`${hotel.photos[index]}`}
                           alt=""
                           key={index}
                           onClick={() => handleOpenImgSlider(index)}
@@ -491,9 +501,9 @@ const SingleHotel = () => {
                           <div className="eachImg" key={index}>
                             <img
                               src={
-                                photo.includes("http")
-                                  ? photo
-                                  : `${process.env.PUBLIC_URL}/upload/hotels/${photo}`
+                                allowedExtensions.test(photo)
+                                  ? `${process.env.PUBLIC_URL}/upload/hotels/${photo}`
+                                  : photo
                               }
                               alt=""
                               key={index}
@@ -518,6 +528,17 @@ const SingleHotel = () => {
                       onChange={(e) => setFiles(e.target.files)}
                       style={{ display: "none" }}
                     />
+                  </div>
+                  <div className="uploadUrl">
+                    <input
+                      id="photo"
+                      type="text"
+                      value={imgUrl}
+                      onChange={handleChange}
+                    />
+                    <button className="uploadImage" onClick={handleImgUrl}>
+                      Upload
+                    </button>
                   </div>
                 </div>
                 <div className="right">
@@ -978,6 +999,7 @@ const SingleHotel = () => {
                         <option value={true}>Yes</option>
                       </select>
                     </div>
+
                     <div className="btns">
                       <button className="updateBtn" onClick={handleSubmission}>
                         Update

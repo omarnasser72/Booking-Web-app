@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import Featured from "../../components/featured/Featured";
 import FeaturedProperties from "../../components/featuredProperties/FeaturedProperties";
 import Footer from "../../components/footer/Footer";
@@ -6,8 +7,11 @@ import MailList from "../../components/mailList/MailList";
 import Navbar from "../../components/navbar/Navbar";
 import PropertyList from "../../components/propertyList/PropertyList";
 import "./home.css";
+import { SearchContext } from "../../context/SearchContext";
 
 const Home = () => {
+  const { date: contextDate } = useContext(SearchContext);
+  console.log(contextDate);
   return (
     <div className="Home">
       <Navbar />

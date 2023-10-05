@@ -1,10 +1,8 @@
 import "./newReservation.scss";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Navbar from "../../components/navbar/Navbar";
-import DriveFolderUploadOutlinedIcon from "@mui/icons-material/DriveFolderUploadOutlined";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { reservationInputs, userInputs } from "../../formSource";
 import { useNavigate } from "react-router-dom";
 import useFetch from "../../hooks/useFetch";
 import { DateRange } from "react-date-range";
@@ -165,10 +163,19 @@ const NewReservation = () => {
     console.log(dateRange);
   }, [dateRange]);
 
-  const { data: users, error: userError } = useFetch("/users");
+  const {
+    data: users,
+    error: userError,
+    loading: usersLoading,
+  } = useFetch("/users");
 
   console.log(users);
-  const { data: hotels } = useFetch("/hotels");
+  const {
+    data: hotels,
+    error: hotelsError,
+    loading,
+    hotelsLoading,
+  } = useFetch("/hotels");
 
   console.log(hotelId);
   console.log(hotels);
@@ -363,7 +370,12 @@ const NewReservation = () => {
             dayDifference(
               new Date(selectedDates.startDate),
               new Date(selectedDates.endDate)
-            ) * price,
+            ) === 0
+              ? price
+              : dayDifference(
+                  new Date(selectedDates.startDate),
+                  new Date(selectedDates.endDate)
+                ) * price,
         };
         console.log(newReservation);
         const reservationRes = await axios.post(
@@ -435,10 +447,16 @@ const NewReservation = () => {
                   value={userId}
                   onFocus={() => setUserFocus(true)}
                 >
-                  <option value="">Select user</option>
-                  {users.map((user) => (
-                    <option value={user._id}>{user.username}</option>
-                  ))}
+                  {usersLoading ? (
+                    <option>loading</option>
+                  ) : (
+                    <>
+                      <option value="">Select user</option>
+                      {users.map((user) => (
+                        <option value={user._id}>{user.username}</option>
+                      ))}
+                    </>
+                  )}
                 </select>
               </div>
               <div className="formInput">
@@ -468,10 +486,16 @@ const NewReservation = () => {
                   defaultValue={""}
                   onFocus={() => setHotelFocus(true)}
                 >
-                  <option value="">Select a hotel</option>
-                  {hotels.map((hotel) => (
-                    <option value={hotel._id}>{hotel.name}</option>
-                  ))}
+                  {hotelsLoading ? (
+                    <option>loading</option>
+                  ) : (
+                    <>
+                      <option value="">Select a hotel</option>
+                      {hotels.map((hotel) => (
+                        <option value={hotel._id}>{hotel.name}</option>
+                      ))}
+                    </>
+                  )}
                 </select>
               </div>
             </div>

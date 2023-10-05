@@ -1,5 +1,8 @@
 .reserve {
   width: 100%;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -7,11 +10,23 @@
   z-index: 3;
   background-color: rgb(66, 66, 66);
   color: #fffc55;
-  padding: 40px;
+  /*padding: 40px;*/
   position: relative;
 }
-.selectRooms {
+.reserveContainer {
+  width: 90%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  /*margin: 0;*/
+}
+.changeDate {
   width: 100%;
+}
+
+.selectRooms {
+  width: 80%;
   height: 20px;
   font-size: 15px;
   font-weight: bold;
@@ -20,12 +35,13 @@
   margin-top: 3%;
 }
 .reservationRooms {
-  width: 100%;
+  width: 90%;
   display: flex;
-  justify-content: start;
-  padding: 40px;
-  margin: 0;
-  gap: 10%;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
+  /*padding: 40px;*/
+  gap: 20px;
 }
 .reserveClose {
   position: absolute;
@@ -45,7 +61,9 @@
   -webkit-box-shadow: 2px 4px 10px 1px rgba(0, 0, 0, 0.47);
   box-shadow: 2px 4px 10px 1px rgba(201, 201, 201, 0.712);
 }
-
+.reserveButton {
+  width: 100%;
+}
 .room {
   display: flex;
 }
@@ -59,6 +77,9 @@
 .roomNumbers {
   display: flex;
   gap: 5px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 .reserveRoomTitle {
   font-weight: 500;
@@ -77,11 +98,14 @@
 }
 
 .reserveSelectedRooms {
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
 }
-
+.room {
+  gap: 5px;
+}
 .room1 {
   display: flex;
   flex-direction: column;
@@ -117,4 +141,7 @@ button {
   font-size: x-large;
   margin-bottom: 15px;
   cursor: pointer;
+}
+.closeIcon.disabled {
+  cursor: not-allowed;
 }

@@ -12,11 +12,12 @@ const Reserve = ({ hotelId }) => {
   const navigate = useNavigate();
   const { date: contextDate, options } = useContext(SearchContext);
   const [date, setDate] = useState(contextDate);
+  console.log(contextDate);
   const [noOfPeople, setNoOfPeople] = useState(0);
-  const { data, loading, error } = useFetch(`/hotels/room/${hotelId}`);
+  const { data: rooms, loading, error } = useFetch(`/hotels/room/${hotelId}`);
   const [selectedRooms, setSelectedRooms] = useState([{}]);
   const [dateFound, setDateFound] = useState(false);
-  const [openCalendar, setOpenCalendar] = useState(true);
+  const [openCalendar, setOpenCalendar] = useState(false);
 
   //selected date in DateRange Component
   const [currSelectedDate, setCurrSelectedDate] = useState([
@@ -38,18 +39,27 @@ const Reserve = ({ hotelId }) => {
   }, [openCalendar]);
 
   useEffect(() => {
+    console.log(
+      (date[0].startDate === undefined ||
+        date[0].endDate === undefined ||
+        date[0].startDate === null ||
+        date[0].endDate === null) &&
+        contextDate[0].startDate === undefined,
+      contextDate[0].startDate === undefined
+    );
     if (
-      date[0].startDate === undefined ||
-      date[0].endDate === undefined ||
-      date[0].startDate === null ||
-      date[0].endDate === null
+      (date[0].startDate === undefined ||
+        date[0].endDate === undefined ||
+        date[0].startDate === null ||
+        date[0].endDate === null) &&
+      contextDate[0].startDate === undefined
     ) {
       setDateFound(false);
     } else {
       setDateFound(true);
     }
     console.log(date[0]);
-  }, [date]);
+  }, [date, contextDate]);
 
   useEffect(() => {
     console.log(dateFound);
@@ -156,7 +166,10 @@ const Reserve = ({ hotelId }) => {
               startDate: date[0].startDate,
               endDate: date[0].endDate,
             },
-            cost: reservationDays * roomPrice,
+            cost:
+              reservationDays * roomPrice === 0
+                ? roomPrice
+                : reservationDays * roomPrice,
           };
           console.log(reserve);
           const reserveRes = await axios.post(
@@ -174,19 +187,27 @@ const Reserve = ({ hotelId }) => {
     }
   };
 
+  const h = Math.max(120, (rooms.length / 5) * 200);
+
   return (
-    <div className="reserve">
-      {dateFound && !openCalendar ? (
+    <div className="reserve" style={{ height: `${h}vh` }}>
+      {contextDate[0].startDate || (dateFound && !openCalendar) ? (
         <div className="reserveContainer">
-          <button onClick={() => setDateFound(false)}>
-            Change Date Duration
-          </button>
+          <div className="changeDate">
+            <button onClick={() => setDateFound(false)}>
+              Change Date Duration
+            </button>
+          </div>
           <div className="selectRooms">
             <h1>Select rooms:</h1>
           </div>
           <div className="reservationRooms">
-            {data?.map((room) => (
-              <div className="reserveRoom" key={room._id}>
+            {rooms?.map((room) => (
+              <div
+                className="reserveRoom"
+                key={room._id}
+                style={{ width: "100%" }}
+              >
                 <div className="roomInfo">
                   <div className="reserveRoomTitle">
                     <h4>Room Title: {room.title}</h4>
@@ -216,20 +237,22 @@ const Reserve = ({ hotelId }) => {
               </div>
             ))}
           </div>
-          <button onClick={handeleReserveClick} className="reserveBtn">
-            Reserve
-          </button>
+          <div className="reserveButton">
+            <button onClick={handeleReserveClick} className="reserveBtn">
+              Reserve
+            </button>
+          </div>
         </div>
       ) : (
         <div className="newDate">
           <h3>Please, select duration to reserve</h3>
-          {dateFound && (
-            <FontAwesomeIcon
-              icon={faCircleXmark}
-              onClick={() => setOpenCalendar(false)}
-              className="closeIcon"
-            />
-          )}
+          <FontAwesomeIcon
+            icon={faCircleXmark}
+            onClick={() => setOpenCalendar(false)}
+            className={`closeIcon ${dateFound ? "" : "disabled"}`}
+            disabled={!dateFound}
+          />
+
           <div className="dateRange" on>
             <DateRange
               editableDateInputs={true}

@@ -19,6 +19,7 @@ import SingleHotel from "./pages/singleHotel/SingleHotel";
 import SingleRoom from "./pages/singleRoom/SingleRoom";
 import SingleReservation from "./pages/singleReservation/SingleReservation";
 import NewReservation from "./pages/newReservation/NewReservation";
+import AdminProfile from "./pages/adminProfile/AdminProfile";
 
 function App() {
   const ProtectedRoute = ({ children }) => {
@@ -43,6 +44,14 @@ function App() {
                 </ProtectedRoute>
               }
             />
+            <Route
+              path="adminProfile"
+              element={
+                <ProtectedRoute>
+                  <AdminProfile />
+                </ProtectedRoute>
+              }
+            ></Route>
             <Route path="users">
               <Route
                 index

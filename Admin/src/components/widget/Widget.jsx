@@ -1,75 +1,84 @@
 import "./widget.scss";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-import AccountBalanceWalletOutlinedIcon from "@mui/icons-material/AccountBalanceWalletOutlined";
-import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-import MonetizationOnOutlinedIcon from "@mui/icons-material/MonetizationOnOutlined";
+import StoreIcon from "@mui/icons-material/Store";
+import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
+import BookOnlineIcon from "@mui/icons-material/BookOnline";
+import axios from "axios";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Widget = ({ type }) => {
   let data;
-  const amount = 100;
-  const diff = 20;
+  const navigate = useNavigate();
+  const [noOfUsers, setNoOfUsers] = useState();
+  const [noOfHotels, setNoOfHotels] = useState();
+  const [noOfRooms, setNoOfRooms] = useState();
+  const [noOfReservations, setNoOfReservations] = useState();
+
+  const [loading, setLoading] = useState(true);
+
+  const handleWidgets = async (e) => {
+    try {
+      setNoOfUsers((await axios.get(`/users`)).data.length);
+      setNoOfHotels((await axios.get(`/hotels`)).data.length);
+      setNoOfRooms((await axios.get(`/rooms`)).data.length);
+      setNoOfReservations((await axios.get(`/reservations`)).data.length);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  handleWidgets();
+  const handleDataLink = async (e, link) => {
+    switch (link) {
+      case "View Users":
+        navigate(`/users`);
+        break;
+      case "View Hotels":
+        navigate(`/hotels`);
+        break;
+      case "View Rooms":
+        navigate(`/rooms`);
+        break;
+      case "View Reservations":
+        navigate(`/reservations`);
+        break;
+      default:
+        break;
+    }
+  };
 
   switch (type) {
     case "user":
       data = {
         title: "USERS",
-        isMoney: false,
-        link: "see all users",
-        icon: (
-          <PersonOutlinedIcon
-            className="icon"
-            style={{
-              color: "crimson",
-              backgroundColor: "rgba(255, 0, 0, 0.2)",
-            }}
-          />
-        ),
+        link: "View Users",
+        icon: <PersonOutlinedIcon className="icon" />,
+        quantity: noOfUsers,
       };
       break;
-    case "earning":
+    case "hotels":
       data = {
-        title: "EARNINGS",
-        isMoney: true,
-        link: "View net earnings",
-        icon: (
-          <MonetizationOnOutlinedIcon
-            className="icon"
-            style={{ backgroundColor: "rgba(0, 128, 0, 0.2)", color: "green" }}
-          />
-        ),
+        title: "HOTELS",
+        link: "View Hotels",
+        icon: <StoreIcon className="icon" />,
+        quantity: noOfHotels,
       };
       break;
-    case "order":
+    case "rooms":
       data = {
-        title: "ORDERS",
-        isMoney: false,
-        link: "see all orders",
-        icon: (
-          <ShoppingCartOutlinedIcon
-            className="icon"
-            style={{
-              color: "crimson",
-              backgroundColor: "rgba(255, 0, 0, 0.2)",
-            }}
-          />
-        ),
+        title: "ROOMS",
+        link: "View Rooms",
+        icon: <MeetingRoomIcon className="icon" />,
+        quantity: noOfRooms,
       };
       break;
-    case "balance":
+    case "reservations":
       data = {
-        title: "BALANCE",
-        isMoney: true,
-        link: "see all details",
-        icon: (
-          <AccountBalanceWalletOutlinedIcon
-            className="icon"
-            style={{
-              color: "crimson",
-              backgroundColor: "rgba(255, 0, 0, 0.2)",
-            }}
-          />
-        ),
+        title: "RESERVATIONS",
+        link: "View Reservations",
+        icon: <BookOnlineIcon className="icon" />,
+        quantity: noOfReservations,
       };
       break;
     default:
@@ -79,19 +88,12 @@ const Widget = ({ type }) => {
     <div className="widget">
       <div className="left">
         <span className="title">{data.title}</span>
-        <span className="counter">
-          {data.isMoney && "$"}
-          {amount}
+        <span className="counter">{loading ? "loading" : data.quantity}</span>
+        <span className="link" onClick={(e) => handleDataLink(e, data.link)}>
+          {data.link}
         </span>
-        <span className="link">see all users{data.link}</span>
       </div>
-      <div className="right">
-        <div className="percentage positive">
-          <KeyboardArrowUpIcon />
-          {diff}%
-        </div>
-        {data.icon}
-      </div>
+      <div className="right">{data.icon}</div>
     </div>
   );
 };

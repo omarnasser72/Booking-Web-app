@@ -64,7 +64,7 @@ export const Sidebar = () => {
               <span>Reservations</span>
             </li>
           </Link>
-          <p className="title">USEFUL</p>
+          {/* <p className="title">USEFUL</p>
           <li>
             <InsertChartIcon className="icon" />
             <span>Stats</span>
@@ -85,9 +85,13 @@ export const Sidebar = () => {
           <li>
             <SettingsApplicationsIcon className="icon" />
             <span>Settings</span>
-          </li>
+          </li> */}
           <p className="title">USER</p>
-          <li>
+          <li
+            onClick={() => {
+              navigate(`/adminProfile`);
+            }}
+          >
             <AccountCircleOutlinedIcon className="icon" />
             <span>Profile</span>
           </li>

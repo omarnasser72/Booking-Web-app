@@ -9,7 +9,7 @@ I build it using MVC design pattern
 
 <h2>Backend Side</h2>
 <p>I used express using middlewares, moongose for connecting to MongoDB server and created my routes</p>
-<h2>Models</2>
+<h2>Models</h2>
 <p>We have 5 models for User, Hotel, Reservation, Room and Hotel's Rate</p>
 <p>I used schema function in moongose to create each in mongoDB server</p>
 <h2>Contollers</h2>

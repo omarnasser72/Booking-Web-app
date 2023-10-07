@@ -13,7 +13,7 @@ I build it using MVC design pattern
 <p>We have 5 models for User, Hotel, Reservation, Room and Hotel's Rate</p>
 <p>I used schema function in moongose to create each in mongoDB server</p>
 <h2>Contollers</h2>
-<h5>User Controller</h5>
+<h3>User Controller</h3>
 <p>We have here 5 apis (changePwd, updateUser, deleteUser, getUser, getAllUsers)</p>
 <strong>***To be clear that if any step isn't successfully executed we use next helper function to sent error this error is handled by errorhandler function in index.js ***</strong>
 <p>Let's talk about each</p>

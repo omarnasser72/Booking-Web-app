@@ -11,6 +11,11 @@ I build it using MVC design pattern
 <p>I used express using middlewares, moongose for connecting to MongoDB server and created my routes</p>
 <h2>Models</h2>
 <p>We have 5 models for User, Hotel, Reservation, Room and Hotel's Rate</p>
+<h3>User model </h3>
+<p>describes user's information represented in username, email, profile's photo, password, birthdate, phone, city, country, isAdmin to detect if it's Admin or not </p>
+<h3>Hotel model </h3>
+<p>describes hotel's information represented in name, city, 
+hotel's photos, type, title, description, city, country, distance(distance from city's location), address, rating, cheapestPrice(the cheapest room's price in hotel), featured(is it featured hotel or not), rooms(array of rooms including type and numbers with it's reservation dates) </p>
 <p>I used schema function in moongose to create each in mongoDB server</p>
 <h2>Contollers</h2>
 <h3>User Controller</h3>

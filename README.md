@@ -16,7 +16,14 @@ I build it using MVC design pattern
 <h3>Hotel model </h3>
 <p>describes hotel's information represented in name, city, 
 hotel's photos, type, title, description, city, country, distance(distance from city's location), address, rating, cheapestPrice(the cheapest room's price in hotel), featured(is it featured hotel or not), rooms(array of rooms including type and numbers with it's reservation dates) </p>
+<h3>Room model </h3>
+<p>describes hotel rate's information represented in title, description, price, maxPeople(maximum no of people can stay at the room), images, roomNumbers(contains array of numbers for this type of room and unavailableDates(array of dates that aren't available for reservations) </p>
+<h3>Hotel Rate model </h3>
+<p>describes hotel rate's information represented in userId(whose reservation it is ) , hotelId(in which hotel), roomTypeId(which type of room ), roomNumberId(which number in the roomvtype ), reservationDuration(contains the start and end dates of duration of the reservation ), cost(cost of reservation based of room type's price and no of days between start and end dates) </p>
 <p>I used schema function in moongose to create each in mongoDB server</p>
+<h3>Reservation model </h3>
+<p>describes reservation's information represented in rating(it's not the hotel's rate but it's user's rate to the hotel) , hotelId(to identify whose hotel rate it is) , 
+userId(to identify which user rate this value with this rate)  </p>
 <h2>Contollers</h2>
 <h3>User Controller</h3>
 <p>We have here 5 apis (changePwd, updateUser, deleteUser, getUser, getAllUsers)</p>

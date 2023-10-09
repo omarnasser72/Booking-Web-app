@@ -37,7 +37,7 @@ userId(to identify which user rate this value with this rate)  </p>
 
 <p><strong>getUserReservations</strong> api takse user's id from params and search for all user's reservations using user's id and return all if exist otherwise reservation not found</p>
 <h3>Authentication Controller</h3>
-<p><strong>signup</strong> api takes user object and check if the username, email, phone already exists in database if not we save new user in and hash password before saving it in database using bycrypt then using node mailer we send mail to the user's email informing him that he has registered on our webapp</p>
+<strong>***To be clear that if any step isn't successfully executed we use next helper function to sent error this error is handled by errorhandler function in index.js ***</strong><p><strong>signup</strong> api takes user object and check if the username, email, phone already exists in database if not we save new user in and hash password before saving it in database using bycrypt then using node mailer we send mail to the user's email informing him that he has registered on our webapp</p>
 <strong>login</strong> api takes credentials for logging in represented in (username, password ) and search for user using username in database if exists it signs new token and extracts password, is Admin and return other information in the user object</p>
 <p><strong>logout</strong> api it resets access Token to empty</p>
 

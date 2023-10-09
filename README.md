@@ -52,3 +52,10 @@ api takes hotel's id and search if exists in database it deletes it</p>
 <p><strong>countByCity</strong> api takes city attribute and return the no of all hotels that exist in that city</p>
 <p><strong>countByType</strong> api return the number of hotels, apartments, resorts, villas and cabins </p>
 <p><strong>getHotelRooms</strong> api takes hotelId and returns all returns all types of rooms exist in this hotels</p>
+<h3>Hotel Rate Controller</h3>
+<p><strong>***To be clear that if any step isn't successfully executed we use next helper function to sent error this error is handled by errorhandler function in index.js ***</strong></p>
+<p><strong>createRate</strong> api takes userId, hotelId, rating and create rate object and check if this user rated this hotel before if so we update it's value with the new rate sent if not we save new one in database then we get all rates of this hotel and iterate on them to set the new accumulative rate of the hotel and and update the rate in the hotel model in the database</p>
+<p><strong>updateRate</strong> api takes hotelRate obj and updates in the database </p>
+<p><strong>getRate</strong> api return the hotelRate using hotelRateId if exists</p>
+<p><strong>getAllRates</strong> api return all hotel Rates from database</p>
+<p><strong>deleteRate</strong> api deletes rate using rateId if exists</p>

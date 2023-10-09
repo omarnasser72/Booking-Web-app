@@ -40,4 +40,15 @@ userId(to identify which user rate this value with this rate)  </p>
 <strong>***To be clear that if any step isn't successfully executed we use next helper function to sent error this error is handled by errorhandler function in index.js ***</strong><p><strong>signup</strong> api takes user object and check if the username, email, phone already exists in database if not we save new user in and hash password before saving it in database using bycrypt then using node mailer we send mail to the user's email informing him that he has registered on our webapp</p>
 <strong>login</strong> api takes credentials for logging in represented in (username, password ) and search for user using username in database if exists it signs new token and extracts password, is Admin and return other information in the user object</p>
 <p><strong>logout</strong> api it resets access Token to empty</p>
-
+<h3>Hotel Controller</h3>
+<strong>***To be clear that if any step isn't successfully executed we use next helper function to sent error this error is handled by errorhandler function in index.js ***</strong>
+<p><strong>createHotel</strong> api takes hotel object and check if it's name doesn't exist it saves it on database</p>
+<p><strong>updateHotel</strong> api takes updated data and retrieve previous state of the hotel then calculates new rate value after that it checks if the new name in updated data doesn't exist it update the hotel with the new data and saves it in database</p>
+<p><strong>deleteHotel</strong>
+api takes hotel's id and search if exists in database it deletes it</p>
+<p><strong>getHotel</strong> api return the hotel if exists using hotelId</p>
+<p><strong>getAllHotels</strong> api get all hotels in database and return at max the max Limit sent by the user in frontend</p>
+<p><strong>getHotels</strong> api takes max, min, city to search for all hotels that their names begin with city send by the user (not just the equal to it), have cheapestPrice that falls between min and max and returns them</p>
+<p><strong>countByCity</strong> api takes city attribute and return the no of all hotels that exist in that city</p>
+<p><strong>countByType</strong> api return the number of hotels, apartments, resorts, villas and cabins </p>
+<p><strong>getHotelRooms</strong> api takes hotelId and returns all returns all types of rooms exist in this hotels</p>
